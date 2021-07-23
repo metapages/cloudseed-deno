@@ -5,7 +5,8 @@ FROM denoland/deno:alpine
 RUN apk --no-cache --update add \
     bash \
     curl \
-    git
+    git \
+    openssh
 
 # justfile for running commands, you will mostly interact with just https://github.com/casey/just
 RUN VERSION=0.9.1 ; \

@@ -21,7 +21,7 @@ _help:
 # [patch|minor|major] Publish a new tagged release https://deno.land/x/version@v1.1.0
 @publish +args="patch":
     version {{args}}
-    git push origin $(cat VERSION)
+    git push origin v"$(echo $(head -n 1 VERSION))"
 
 test:
     deno test --allow-run --fail-fast
@@ -47,6 +47,7 @@ watch:
             -e WORKSPACE=$WORKSPACE \
             -v {{ROOT}}:$WORKSPACE \
             -v $HOME/.gitconfig:/root/.gitconfig \
+            -v $HOME/.ssh:/root/.ssh \
             -v /var/run/docker.sock:/var/run/docker.sock \
             -w $WORKSPACE \
             {{DOCKER_IMAGE_PREFIX}}cloud:{{DOCKER_TAG}} bash || true
