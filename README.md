@@ -1,20 +1,6 @@
-# cloudseed-deno
+# Deno source for cloudseed-based repositories
 
-## Use:
-
-E.g.
-
-    import { exec } from "https://raw.githubusercontent.com/metapages/cloudseed-deno/v0.0.14/deno/mod.ts"
-
-Change version and file to suit.
-
-## Blurb
-
-Deno scripts and tools for building, packaging, deploying, and publishing libraries and apps from repositories.
-
-Primarily used by [cloudseed](https://github.com/metapages/cloudseed) based repositories where users need to manage many git repositories.
-
-Designed to be used in conjuction with `justfile`s or consumed by other scripts.
+User documentation: https://deno.land/x/cloudseed
 
 ## Repository setup
 
