@@ -2,6 +2,8 @@
 
 Deno scripts and tools for building, packaging, deploying, and publishing libraries and apps from repositories.
 
+Primarily used by [cloudseed](https://github.com/metapages/cloudseed) based repositories where users need to manage many git repositories.
+
 Designed to be used in conjuction with `justfile`s or consumed by other scripts.
 
 ## Repository setup
