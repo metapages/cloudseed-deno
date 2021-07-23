@@ -21,7 +21,7 @@ _help:
 # [patch|minor|major] Publish a new tagged release https://deno.land/x/version@v1.1.0
 @publish +args="patch":
     version {{args}}
-    git push origin $(cat VERSION)
+    git push origin v"$(echo $(head -n 1 VERSION))"
 
 test:
     deno test --allow-run --fail-fast
