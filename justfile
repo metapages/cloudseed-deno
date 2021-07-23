@@ -47,6 +47,7 @@ watch:
             -e WORKSPACE=$WORKSPACE \
             -v {{ROOT}}:$WORKSPACE \
             -v $HOME/.gitconfig:/root/.gitconfig \
+            -v $HOME/.ssh:/root/.ssh \
             -v /var/run/docker.sock:/var/run/docker.sock \
             -w $WORKSPACE \
             {{DOCKER_IMAGE_PREFIX}}cloud:{{DOCKER_TAG}} bash || true
