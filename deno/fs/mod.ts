@@ -1,4 +1,4 @@
-import {join, parse} from "https://deno.land/std/path/mod.ts";
+import {join, parse} from "https://deno.land/std@0.83.0/path/mod.ts";
 
 /**
  * Return the first file found with the given prefix, in the current directory,

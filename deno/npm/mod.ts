@@ -1,12 +1,12 @@
 // deno ci scripts and tools
 // lives locally, but the intention is to migrate to a shared repository once patterns emerge
 //
-import * as path from "https://deno.land/std/path/mod.ts";
-import { printf } from "https://deno.land/std/fmt/printf.ts";
-import * as colors from "https://deno.land/std/fmt/colors.ts";
+import * as path from "https://deno.land/std@0.83.0/path/mod.ts";
+import { printf } from "https://deno.land/std@0.83.0/fmt/printf.ts";
+import * as colors from "https://deno.land/std@0.83.0/fmt/colors.ts";
 
 export const readJsonFile :<T>(filePath :string) => Promise<T> = async (filePath) => {
-    let jsonBlob = await Deno.readTextFile(filePath);
+    const jsonBlob = await Deno.readTextFile(filePath);
     return JSON.parse(jsonBlob);
 }
 

@@ -1,7 +1,7 @@
 import {
     assertStrictEquals,
 } from "https://deno.land/std@0.70.0/testing/asserts.ts";
-import * as path from "https://deno.land/std/path/mod.ts";
+import * as path from "https://deno.land/std@0.83.0/path/mod.ts";
 
 Deno.test("getArgsFromEnvAndCli valid args", async () => {
     const script = path.join(path.dirname(import.meta.url), 'args_or_env_test_script.ts').replace('file:', '')

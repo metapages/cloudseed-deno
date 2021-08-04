@@ -1,7 +1,7 @@
 import {
     assertStrictEquals,
 } from "https://deno.land/std@0.70.0/testing/asserts.ts";
-import { parse } from "https://deno.land/std/flags/mod.ts";
+import { parse } from "https://deno.land/std@0.83.0/flags/mod.ts";
 
 // expects:
 // KEY1=value1

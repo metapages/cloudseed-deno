@@ -3,7 +3,7 @@
  */
 
 import {exec, OutputMode } from "../mod.ts";
-import { parse } from "https://deno.land/std/flags/mod.ts";
+import { parse } from "https://deno.land/std@0.83.0/flags/mod.ts";
 
 const CLI_ARGS = parse(Deno.args);
 const APPENDED_SLASH = CLI_ARGS['append-slash'] ? '/' : '';

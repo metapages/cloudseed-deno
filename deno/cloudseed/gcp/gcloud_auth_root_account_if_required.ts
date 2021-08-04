@@ -3,7 +3,7 @@
  * cloudseed GCE service account if needed
  */
 
-import * as Colors from "https://deno.land/std/fmt/colors.ts ";
+import * as Colors from "https://deno.land/std@0.83.0/fmt/colors.ts ";
 import { run } from "../../exec/mod.ts";
 import { getGCloudTerraformProjectId, isGCloudTerraformAccount } from "../mod.ts";
 
