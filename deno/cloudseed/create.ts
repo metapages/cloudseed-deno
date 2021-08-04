@@ -3,7 +3,7 @@
  * for a deployment of the app.
  */
 
-import * as path from "https://deno.land/std/path/mod.ts";
+import * as path from "https://deno.land/std@0.83.0/path/mod.ts";
 import { Command } from "https://deno.land/x/cliffy@v0.15.0/command/mod.ts";
 import Random from "https://deno.land/x/random@v1.1.2/Random.js";
 import { ensureDirSync, ensureSymlinkSync, existsSync } from "https://deno.land/std@0.74.0/fs/mod.ts";

@@ -8,7 +8,7 @@
  *  deno run --allow-env ./ensureContainerBackgroundRunning.ts <service>
  */
 import { ensureContainerIsRunning } from "../mod.ts";
-import {parse} from "https://deno.land/std/flags/mod.ts";
+import {parse} from "https://deno.land/std@0.83.0/flags/mod.ts";
 
 const service = parse(Deno.args)._[0] as string;
 console.log("target", service);

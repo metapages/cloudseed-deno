@@ -6,7 +6,7 @@
  * This is used by many commands
  */
 
-import { parse } from "https://deno.land/std/flags/mod.ts";
+import { parse } from "https://deno.land/std@0.83.0/flags/mod.ts";
 
 /**
  * Pass in a map of required env var values, they can also be pulled

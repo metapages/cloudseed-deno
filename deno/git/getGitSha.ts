@@ -6,7 +6,7 @@
  * So if that value is found in the env vars, just use it
  */
 
-import { parse } from "https://deno.land/std/flags/mod.ts";
+import { parse } from "https://deno.land/std@0.83.0/flags/mod.ts";
 import { getGitSha } from "./mod.ts";
 
 const CLI_ARGS = parse(Deno.args);

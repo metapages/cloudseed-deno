@@ -24,7 +24,7 @@ _help:
     git push origin v"$(echo $(head -n 1 VERSION))"
 
 test:
-    deno test --allow-run --fail-fast
+    deno test --unstable --allow-run --fail-fast
 
 watch:
     watchexec --exts ts -- just test

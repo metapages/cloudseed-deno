@@ -1,9 +1,9 @@
 // deno scripts
 // import specific files (not mod.ts) otherwise compile errors with --unstable
-import {existsSync} from "https://deno.land/std/fs/exists.ts";
-import {parse as parseYaml} from "https://deno.land/std/encoding/yaml.ts";
+import {existsSync} from "https://deno.land/std@0.83.0/fs/exists.ts";
+import {parse as parseYaml} from "https://deno.land/std@0.83.0/encoding/yaml.ts";
 import {getNearestFileWithPrefix} from "../fs/mod.ts";
-import {basename, dirname, parse} from "https://deno.land/std/path/mod.ts";
+import {basename, dirname, parse} from "https://deno.land/std@0.83.0/path/mod.ts";
 
 export const isInsideDocker = (): boolean => {
   return existsSync("/.dockerenv");

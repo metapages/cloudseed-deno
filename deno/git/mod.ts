@@ -1,3 +1,5 @@
+import * as Colors from "https://deno.land/std@0.83.0/fmt/colors.ts ";
+import { printf } from "https://deno.land/std@0.83.0/fmt/printf.ts";
 import { exec, OutputMode } from "../exec/mod.ts";
 
 export const getGitSha = async ({
@@ -31,10 +33,10 @@ export const getGitSha = async ({
 }
 
 export const ensureGitNoUncommitted :() => Promise<void> = async () => {
-    const result = await exec('git status --untracked-files=no --porcelain'.split(' '), { output: OutputMode.Capture, continueOnError: false, printCommand: false });
-    if (result.stdout && result.stdout.length > 0) {
-        printf(colors.red(`Uncommitted git files\n`));
-        printf(colors.red(`${result.stdout}\n`));
+    const result = await exec('git status --untracked-files=no --porcelain', { output: OutputMode.Capture, continueOnError: false, printCommand: false });
+    if (result.output && result.output.length > 0) {
+        printf(Colors.red(`Uncommitted git files\n`));
+        printf(Colors.red(`${result.output}\n`));
         Deno.exit(1);
     }
 }

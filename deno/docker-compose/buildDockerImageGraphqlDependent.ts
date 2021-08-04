@@ -16,9 +16,9 @@
  *  DOCKER_TAG                  :cache or a git sha
  *  HASURA_GRAPHQL_ADMIN_SECRET :for generating graphql bindings from hasura
  */
-import * as Colors from 'https://deno.land/std/fmt/colors.ts ';
-import * as path from "https://deno.land/std/path/mod.ts";
-import { parse } from "https://deno.land/std/flags/mod.ts";
+import * as Colors from 'https://deno.land/std@0.83.0/fmt/colors.ts ';
+import * as path from "https://deno.land/std@0.83.0/path/mod.ts";
+import { parse } from "https://deno.land/std@0.83.0/flags/mod.ts";
 import { ensureContainerIsRunning, exec, OutputMode } from "../mod.ts";
 import { guessDockerComposeNetworkName } from "./mod.ts";
 import { envArgs } from "../env/mod.ts";
