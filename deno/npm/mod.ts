@@ -1,6 +1,4 @@
-// deno ci scripts and tools
-// lives locally, but the intention is to migrate to a shared repository once patterns emerge
-//
+// utilities for publishing npm modules
 import * as path from "https://deno.land/std@0.83.0/path/mod.ts";
 import { printf } from "https://deno.land/std@0.83.0/fmt/printf.ts";
 import * as colors from "https://deno.land/std@0.83.0/fmt/colors.ts";

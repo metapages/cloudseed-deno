@@ -1,6 +1,5 @@
 import {join, parse} from "https://deno.land/std@0.130.0/path/mod.ts";
 import {
-  ensureDirSync,
   ensureFile,
   existsSync,
 } from "https://deno.land/std@0.130.0/fs/mod.ts";
@@ -54,16 +53,16 @@ export const ensureLineExistsInFile: (args:{file: string, line: string}) => Prom
   return true;
 }
 
-export const removeLineInFile: (args:{file: string, line: string}) => Promise<boolean> = async ({
+export const removeLineInFile: (args:{file: string, regex: RegExp}) => Promise<boolean> = async ({
   file,
-  line
+  regex
 }) => {
   if (!existsSync(file)) {
     return false;
   }
   const text = await Deno.readTextFile(file);
   let lines = text.split('\n');
-  lines = lines.filter(l => l !== line);
+  lines = lines.filter(l => !regex.test(l));
   await Deno.writeTextFile(file, lines.join("\n"));
   return true;
 }
