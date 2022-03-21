@@ -40,3 +40,16 @@ export const ensureGitNoUncommitted :() => Promise<void> = async () => {
         Deno.exit(1);
     }
 }
+
+export const getGitRepositoryRoot :() => Promise<string> = async () => {
+    if (Deno.env.get("GITHUB_WORKSPACE") && Deno.env.get("GITHUB_WORKSPACE") !== "") {
+        return Deno.env.get("GITHUB_WORKSPACE") as string;
+    }
+
+    const result = await exec('git rev-parse --show-toplevel', { output: OutputMode.Capture, continueOnError: false, printCommand: false });
+    if (!result.status.success) {
+        throw result;
+    }
+
+    return result.output;
+}

@@ -1,4 +1,9 @@
-import {join, parse} from "https://deno.land/std@0.83.0/path/mod.ts";
+import {join, parse} from "https://deno.land/std@0.130.0/path/mod.ts";
+import {
+  ensureDirSync,
+  ensureFile,
+  existsSync,
+} from "https://deno.land/std@0.130.0/fs/mod.ts";
 
 /**
  * Return the first file found with the given prefix, in the current directory,
@@ -32,4 +37,33 @@ export const getPathDirectories = (path :string) :string[] => {
   return Array.from(Deno.readDirSync(path)).filter((fileInfo) => {
     return fileInfo.isDirectory && !fileInfo.name.startsWith('.');
   }).map(f => f.name);
+}
+
+export const ensureLineExistsInFile: (args:{file: string, line: string}) => Promise<boolean> = async ({
+  file,
+  line
+}) => {
+  await ensureFile(file);
+  const text = await Deno.readTextFile(file);
+  const lines = text.split('\n');
+  if (lines.includes(line)) {
+    return false;
+  }
+  lines.push(line);
+  await Deno.writeTextFile(file, lines.join("\n"));
+  return true;
+}
+
+export const removeLineInFile: (args:{file: string, line: string}) => Promise<boolean> = async ({
+  file,
+  line
+}) => {
+  if (!existsSync(file)) {
+    return false;
+  }
+  const text = await Deno.readTextFile(file);
+  let lines = text.split('\n');
+  lines = lines.filter(l => l !== line);
+  await Deno.writeTextFile(file, lines.join("\n"));
+  return true;
 }
