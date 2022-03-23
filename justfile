@@ -1,9 +1,13 @@
 # just docs: https://github.com/casey/just
 set shell                          := ["bash", "-c"]
+set dotenv-load                    := true
 ROOT                               := env_var_or_default("GITHUB_WORKSPACE", `git rev-parse --show-toplevel`)
 export DOCKER_IMAGE_PREFIX         := "ghcr.io/metapages/cloudseed-deno"
 # Always assume our current cloud ops image is versioned to the exact same app images we deploy
 export DOCKER_TAG                  := `if [ "${GITHUB_ACTIONS}" = "true" ]; then echo "${GITHUB_SHA}"; else echo "$(git rev-parse --short=8 HEAD)"; fi`
+export DOCKER_IMAGE_NAME           := `basename $(pwd)`
+# Source of deno scripts. When developing we need to switch this
+export DENO_SOURCE                 := env_var_or_default("DENO_SOURCE", "https://deno.land/x/cloudseed@v0.0.18")
 # minimal formatting, bold is very useful
 bold                               := '\033[1m'
 normal                             := '\033[0m'
@@ -15,7 +19,8 @@ _help:
     if [ -f /.dockerenv ]; then
         just --list --unsorted --list-heading $'🌱 Commands:\n\n';
     else
-        just _docker;
+        # Hoist into a docker container with all require CLI tools installed
+        deno run --unstable --allow-all {{DENO_SOURCE}}/cloudseed/docker/docker_mount.ts --user=root --image={{DOCKER_IMAGE_PREFIX}}{{DOCKER_IMAGE_NAME}}:{{DOCKER_TAG}} --context="." --dockerfile=Dockerfile --command=bash;
     fi
 
 # [patch|minor|major] Publish a new tagged release https://deno.land/x/version@v1.1.0
@@ -29,41 +34,5 @@ test:
 watch:
     watchexec --exts ts -- just test
 
-# Do git/ops/cloud operations in docker with all required tools installed, including local bash history
-# Build and run the cloud image, used deployments
-@_docker: _build_docker
-    echo -e "🚪🚪 Entering docker context: {{bold}}{{DOCKER_IMAGE_PREFIX}}cloud:{{DOCKER_TAG}} from <cloud/>Dockerfile 🚪🚪{{normal}}"
-    mkdir -p {{ROOT}}/.tmp
-    touch {{ROOT}}/.tmp/.bash_history
-    export WORKSPACE=/repo && \
-        docker run \
-            --rm \
-            -ti \
-            -e DOCKER_IMAGE_PREFIX=${DOCKER_IMAGE_PREFIX} \
-            -e PS1="< \w/> " \
-            -e PROMPT="<%/% > " \
-            -e DOCKER_IMAGE_PREFIX={{DOCKER_IMAGE_PREFIX}} \
-            -e HISTFILE=$WORKSPACE/.tmp/.bash_history \
-            -e WORKSPACE=$WORKSPACE \
-            -v {{ROOT}}:$WORKSPACE \
-            -v $HOME/.gitconfig:/root/.gitconfig \
-            -v $HOME/.ssh:/root/.ssh \
-            -v /var/run/docker.sock:/var/run/docker.sock \
-            -w $WORKSPACE \
-            {{DOCKER_IMAGE_PREFIX}}cloud:{{DOCKER_TAG}} bash || true
-
-# If the ./app docker image in not build, then build it
-@_build_docker:
-    if [[ "$(docker images -q {{DOCKER_IMAGE_PREFIX}}cloud:{{DOCKER_TAG}} 2> /dev/null)" == "" ]]; then \
-        echo -e "🚪🚪  ➡ {{bold}}Building docker image ...{{normal}} 🚪🚪 "; \
-        echo -e "🚪 </> {{bold}}docker build -t {{DOCKER_IMAGE_PREFIX}}cloud:{{DOCKER_TAG}} . {{normal}}🚪 "; \
-        docker build -t {{DOCKER_IMAGE_PREFIX}}cloud:{{DOCKER_TAG}} . ; \
-    fi
-
-_ensure_inside_docker:
-    #!/usr/bin/env bash
-    set -euo pipefail
-    if [ ! -f /.dockerenv ]; then
-        echo -e "🌵🔥🌵🔥🌵🔥🌵 Not inside a docker container. First run the command: 'just' 🌵🔥🌵🔥🌵🔥🌵"
-        exit 1
-    fi
+@_ensure_inside_docker:
+    deno run --unstable --allow-read=/.dockerenv {{DENO_SOURCE}}/cloudseed/docker/is_inside_docker.ts

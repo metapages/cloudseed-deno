@@ -27,3 +27,11 @@ RUN VERSION=1.14.1 ; \
     (echo "$SHA256SUM  watchexec-${VERSION}-i686-unknown-linux-musl.tar.xz" | sha256sum -c) && \
     tar xvf watchexec-$VERSION-i686-unknown-linux-musl.tar.xz watchexec-$VERSION-i686-unknown-linux-musl/watchexec -C /usr/bin/ --strip-components=1 && \
     rm -rf watchexec-*
+
+
+# Show the just help on shell entry
+RUN echo 'if [ -f justfile ]; then just; fi' >> /root/.bashrc
+
+ENV PROMPT='<%/% > '
+# https://superuser.com/questions/382456/why-does-this-bash-prompt-sometimes-keep-part-of-previous-commands-when-scrollin
+ENV PS1="\n\[\[\033[01;33m\][\w]\[\033[00m\]\n\[\033[0;90m\]\$ "
