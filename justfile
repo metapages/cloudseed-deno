@@ -23,10 +23,9 @@ _help:
         deno run --unstable --allow-all {{DENO_SOURCE}}/cloudseed/docker/docker_mount.ts --user=root --image={{DOCKER_IMAGE_PREFIX}}{{DOCKER_IMAGE_NAME}}:{{DOCKER_TAG}} --context="." --dockerfile=Dockerfile --command=bash;
     fi
 
-# [patch|minor|major] Publish a new tagged release https://deno.land/x/version@v1.1.0
-@publish +args="patch":
-    version {{args}}
-    git push origin v"$(echo $(head -n 1 VERSION))"
+# Bump the version and push a git tag (triggers pushing new docker image). inc=major|minor|patch
+@publish inc="patch":
+    deno run --unstable --allow-all {{DENO_SOURCE}}/cloudseed/publish.ts --increment={{inc}}
 
 test:
     deno test --unstable --allow-run --fail-fast
