@@ -1,6 +1,4 @@
 FROM denoland/deno:alpine
-# this special glibc alpine version is needed for deno to run
-# FROM frolvlad/alpine-glibc:alpine-3.12_glibc-2.32 as browser
 
 RUN apk --no-cache --update add \
     bash \
@@ -9,13 +7,13 @@ RUN apk --no-cache --update add \
     openssh
 
 # justfile for running commands, you will mostly interact with just https://github.com/casey/just
-RUN VERSION=0.9.1 ; \
-    SHA256SUM=054d2e02804b635da051d33cb120d76963fc1dc027b21a2f618bf579632b9c94 ; \
-    curl -L -O https://github.com/casey/just/releases/download/v$VERSION/just-v$VERSION-x86_64-unknown-linux-musl.tar.gz && \
-    (echo "$SHA256SUM  just-v$VERSION-x86_64-unknown-linux-musl.tar.gz" | sha256sum -c) && \
-	mkdir -p /tmp/just && mv just-v$VERSION-x86_64-unknown-linux-musl.tar.gz /tmp/just && cd /tmp/just && \
-    tar -xzf just-v$VERSION-x86_64-unknown-linux-musl.tar.gz && \
-    mkdir -p /usr/local/bin && mv just /usr/local/bin && cd /tmp && rm -rf just
+RUN VERSION=1.0.0 ; \
+    SHA256SUM=342f8582d929b9212ffcbe9f7749e12908053cf215eb8d4a965c47ea2f24b0a4 ; \
+    curl -L -O https://github.com/casey/just/releases/download/$VERSION/just-$VERSION-x86_64-unknown-linux-musl.tar.gz && \
+    (echo "$SHA256SUM  just-$VERSION-x86_64-unknown-linux-musl.tar.gz" | sha256sum -c -) && \
+    mkdir -p /usr/local/bin && \
+    tar -xzf just-$VERSION-x86_64-unknown-linux-musl.tar.gz -C /usr/local/bin just && \
+    rm -rf just-$VERSION-x86_64-unknown-linux-musl.tar.gz
 # Unify the just binary location on host and container platforms because otherwise the shebang doesn't work properly due to no string token parsing (it gets one giant string)
 ENV PATH $PATH:/usr/local/bin
 # alias "j" to just, it's just right there index finger
@@ -29,5 +27,3 @@ RUN VERSION=1.14.1 ; \
     (echo "$SHA256SUM  watchexec-${VERSION}-i686-unknown-linux-musl.tar.xz" | sha256sum -c) && \
     tar xvf watchexec-$VERSION-i686-unknown-linux-musl.tar.xz watchexec-$VERSION-i686-unknown-linux-musl/watchexec -C /usr/bin/ --strip-components=1 && \
     rm -rf watchexec-*
-
-RUN deno install -n version -r -A https://deno.land/x/version/index.ts
