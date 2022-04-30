@@ -8,6 +8,9 @@ import { run } from "../../exec/mod.ts";
 import { getGCloudTerraformAccount } from "../mod.ts";
 
 export const activateServiceAccount = async () => {
+    // This command is required because we cannot yet filter stderr from the stream
+    // very dumb https://github.com/gpasq/deno-exec/issues/1
+    await run('gcloud config set component_manager/disable_update_check true')
     const output: { account: string, status: string }[] = await run('gcloud auth list --format json').silent().pipeJson();
 
     const email = await getGCloudTerraformAccount();
